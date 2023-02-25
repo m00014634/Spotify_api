@@ -75,7 +75,55 @@ class Song(db.Model):
     song_name = db.Column(db.String,nullable = False)
     song_likes = db.Column(db.Integer,nullable = True , default = 0)
     published_date = db.Column(db.DateTime)
+
     artist_id = db.Column(db.Integer,db.ForeignKey('artists.id',ondelete = 'SET NULL'))
     users_id = db.Column(db.Integer,db.ForeignKey('users.id',ondelete = 'SET NULL'))
+
     user = db.relationship('User')
-    artist = db.relationship('Artist')
+    artist = db.relationship('SongSettings')
+
+
+
+    # Create music
+    def create_music(self,song_name,published_date,artist_id,users_id,music):
+        new_song = Song(song_name=song_name,published_date=published_date,artist_id=artist_id,users_id=users_id)
+        song_for_artist = SongSettings()
+        song_for_artist.song_path = f'music/{music}'
+        self.artist.append(song_for_artist)
+        db.session.add(new_song)
+        db.session.add(song_for_artist)
+        db.session.commit()
+
+    def change_song_name(self,song_id,new_song_name):
+        current_song_name = Song.query.get_or_404(song_id)
+
+        if current_song_name == new_song_name:
+            return 'Старое название песни должно отличаться от старого'
+        current_song_name.song_name = new_song_name
+        db.session.commit()
+
+    def delete_music(self,song_id):
+        current_song = Song.query.get_or_404(song_id)
+        db.session.delete(current_song)
+        db.session.commit()
+
+
+
+class SongSettings(db.Model):
+    __tablename__ = 'songs_to_settings'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    song_path = db.Column(db.String, nullable=False)
+    artist_id = db.Column(db.Integer, db.ForeignKey('songs.id', ondelete='SET NULL'))
+
+    # Change song
+    # def change_song_settings(self, song_id, new_song):
+    #     old_song = SongSettings.query.get_or_404(song_id)
+    #     old_song.song_path = f'media/{new_song}'
+    #     db.session.commit()
+    #
+    # # Delete song
+    # def delete_song_settings(self, song_id):
+    #     current_song = SongSettings.query.get_or_404(song_id)
+    #     db.session.delete(current_song)
+    #     db.session.commit()
+
