@@ -11,9 +11,11 @@ db.init_app(app)
 
 
 from users import bp as users_bp
-
+from artists import bp as artists_bp
 
 app.register_blueprint(users_bp)
+app.register_blueprint(artists_bp)
+
 
 @app.route('/')
 def hello():

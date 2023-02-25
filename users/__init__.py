@@ -1,4 +1,4 @@
-from flask import Blueprint,request
+from flask import Blueprint
 from flask_restx import Resource,Api
 from database.models import User
 
