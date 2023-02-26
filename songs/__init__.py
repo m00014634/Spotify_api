@@ -19,6 +19,9 @@ upload_parser.add_argument('users_id',type=int,required = True)
 song_model = api.parser()
 song_model.add_argument('new_song_name')
 
+file_model = api.parser()
+file_model.add_argument('file',location='files',type=FileStorage)
+
 # All Songs [GET /api/song/all]
 @api.route('/song')
 class GetAllSongsOrCreate(Resource):
@@ -64,11 +67,14 @@ class GetOrChangeOrDeletePostById(Resource):
     def get(self,song_id):
         current_song = Song.query.get_or_404(song_id)
         if current_song:
+
             return {'status':1,'song':{'song_name':current_song.song_name,
                                        'song_likes':current_song.song_likes,
                                        'published_date':str(current_song.published_date),
                                        'artist_id':current_song.artist_id,
-                                       'users_id':current_song.users_id}}
+                                       'users_id':current_song.users_id,
+                                       }}
+
         return {'status':0,'message':'Музыка не найдена'}
 
     # Put Song [PUT/api/song/put/{song_id}]

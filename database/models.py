@@ -76,6 +76,7 @@ class Song(db.Model):
     song_likes = db.Column(db.Integer,nullable = True , default = 0)
     published_date = db.Column(db.DateTime)
 
+
     artist_id = db.Column(db.Integer,db.ForeignKey('artists.id',ondelete = 'SET NULL'))
     users_id = db.Column(db.Integer,db.ForeignKey('users.id',ondelete = 'SET NULL'))
 
@@ -115,15 +116,5 @@ class SongSettings(db.Model):
     song_path = db.Column(db.String, nullable=False)
     artist_id = db.Column(db.Integer, db.ForeignKey('songs.id', ondelete='SET NULL'))
 
-    # Change song
-    # def change_song_settings(self, song_id, new_song):
-    #     old_song = SongSettings.query.get_or_404(song_id)
-    #     old_song.song_path = f'media/{new_song}'
-    #     db.session.commit()
-    #
-    # # Delete song
-    # def delete_song_settings(self, song_id):
-    #     current_song = SongSettings.query.get_or_404(song_id)
-    #     db.session.delete(current_song)
-    #     db.session.commit()
+
 
