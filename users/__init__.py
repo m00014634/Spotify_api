@@ -10,6 +10,7 @@ user_model = api.parser()
 user_model.add_argument('first_name',type=str,required =True)
 user_model.add_argument('last_name',type=str,required =True)
 user_model.add_argument('username',type=str,required = True)
+user_model.add_argument('password',type=str,required =True)
 user_model.add_argument('phone_number',type=str,required =True)
 
 
@@ -27,9 +28,10 @@ class GetAllUsersOrCreate(Resource):
         first_name = args.get('first_name')
         last_name = args.get('last_name')
         username = args.get('username')
+        password = args.get('password')
         phone_number = args.get('phone_number')
         try:
-            User().user_registration(first_name, last_name, username, phone_number)
+            User().user_registration(first_name, last_name, username,password, phone_number)
             return {'status':1,'message':'Пользователь успешно создан'}
         except:
             return {'status':0,'message':'Такое имя пользователя уже существует'}
@@ -38,21 +40,22 @@ class GetAllUsersOrCreate(Resource):
     def get(self):
         all_users = User.query.all()
         if all_users:
-            result = [{i.id: i.username} for i in all_users]
+            result = [{'username': i.username} for i in all_users]
             return {'status':1,'users':result}
         return []
 
-@api.route('/<int:user_id>')
+@api.route('/<string:username>')
 class GetOrChangeExactUser(Resource):
 
     # Посмотреть на определенного пользователя
-    def get(self,user_id):
-        current_user = User.query.get_or_404(user_id)
+    def get(self,username):
+        current_user = User.query.get_or_404(username)
 
         if current_user:
             return {'status':1,'user':{'first_name':current_user.first_name,
                                        'last_name':current_user.last_name,
                                        'username':current_user.username,
+                                       'password':current_user.password,
                                        'phone_number':current_user.phone_number,
                                        'reg_date':str(current_user.reg_date)}}
 

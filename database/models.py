@@ -14,8 +14,8 @@ class User(db.Model):
 
 
     # Create user
-    def user_registration(self,first_name,last_name,username,phone_number):
-        new_user = User(first_name=first_name,last_name=last_name,username=username,phone_number=phone_number)
+    def user_registration(self,first_name,last_name,username,password,phone_number):
+        new_user = User(first_name=first_name,last_name=last_name,username=username,password=password,phone_number=phone_number)
         db.session.add(new_user)
         db.session.commit()
 
