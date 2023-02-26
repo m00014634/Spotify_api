@@ -1,5 +1,5 @@
 from main import db
-
+from datetime import datetime
 
 # User's table
 class User(db.Model):
@@ -9,6 +9,7 @@ class User(db.Model):
     last_name = db.Column(db.String, nullable=True)
     username = db.Column(db.String, nullable=False,unique =True)
     phone_number = db.Column(db.String,nullable = False,unique =True)
+    reg_date = db.Column(db.DateTime,default = datetime.now())
 
 
     # Create user

@@ -53,7 +53,8 @@ class GetOrChangeExactUser(Resource):
             return {'status':1,'user':{'first_name':current_user.first_name,
                                        'last_name':current_user.last_name,
                                        'username':current_user.username,
-                                       'phone_number':current_user.phone_number}}
+                                       'phone_number':current_user.phone_number,
+                                       'reg_date':str(current_user.reg_date)}}
 
         return {'status':0,'message':'Пользователь не найден'}
 
