@@ -61,11 +61,11 @@ class GetAllSongsOrCreate(Resource):
 
 
 #Exаct Song [GET/ api/song/exect/ {song_id}]
-@api.route('/<int:song_id>')
+@api.route('/<string:song_name>')
 class GetOrChangeOrDeletePostById(Resource):
     # Получить песню
-    def get(self,song_id):
-        current_song = Song.query.get_or_404(song_id)
+    def get(self,song_name):
+        current_song = Song.query.get_or_404(song_name)
         if current_song:
 
             return {'status':1,'song':{'song_name':current_song.song_name,
@@ -80,20 +80,20 @@ class GetOrChangeOrDeletePostById(Resource):
     # Put Song [PUT/api/song/put/{song_id}]
     # Изменить песню
     @api.expect(song_model)
-    def put(self,song_id):
+    def put(self,song_name):
         args = song_model.parse_args()
         new_song_name = args.get('new_song_name')
-        Song().change_song_name(song_id,new_song_name)
+        Song().change_song_name(song_name,new_song_name)
 
         return {'status':1,'message':'Название песни успешно изменена'}
 
     # Delete Song [DELETE/api/song/delete/{song_id}]
     # Удалить песню
-    def delete(self,song_id):
-        current_song = Song.query.get_or_404(song_id)
+    def delete(self,song_name):
+        current_song = Song.query.get_or_404(song_name)
 
         if current_song:
-            Song.delete_music(current_song,song_id)
+            Song.delete_music(current_song,song_name)
             return {'status':1,'message':'Песня успешно удалена'}
 
         return {'status':0,'message':'Песня не удалена'}

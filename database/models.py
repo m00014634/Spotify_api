@@ -72,8 +72,8 @@ class Artist(db.Model):
 # Song's table
 class Song(db.Model):
     __tablename__ = 'songs'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    song_name = db.Column(db.String,nullable = False)
+    id = db.Column(db.Integer,autoincrement=True)
+    song_name = db.Column(db.String,primary_key=True,nullable = False)
     song_likes = db.Column(db.Integer,nullable = True , default = 0)
     published_date = db.Column(db.DateTime)
 
@@ -96,16 +96,16 @@ class Song(db.Model):
         db.session.add(song_for_artist)
         db.session.commit()
 
-    def change_song_name(self,song_id,new_song_name):
-        current_song_name = Song.query.get_or_404(song_id)
+    def change_song_name(self,song_name,new_song_name):
+        current_song_name = Song.query.get_or_404(song_name)
 
         if current_song_name == new_song_name:
             return 'Старое название песни должно отличаться от старого'
         current_song_name.song_name = new_song_name
         db.session.commit()
 
-    def delete_music(self,song_id):
-        current_song = Song.query.get_or_404(song_id)
+    def delete_music(self,song_name):
+        current_song = Song.query.get_or_404(song_name)
         db.session.delete(current_song)
         db.session.commit()
 
