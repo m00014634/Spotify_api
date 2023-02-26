@@ -4,10 +4,11 @@ from datetime import datetime
 # User's table
 class User(db.Model):
     __tablename__ = 'users'
-    id = db.Column(db.Integer,primary_key=True,autoincrement = True)
+    id = db.Column(db.Integer,autoincrement = True)
     first_name = db.Column(db.String,nullable = False)
     last_name = db.Column(db.String, nullable=True)
-    username = db.Column(db.String, nullable=False,unique =True)
+    username = db.Column(db.String, nullable=False,primary_key=True,unique =True)
+    password = db.Column(db.String,nullable = False)
     phone_number = db.Column(db.String,nullable = False,unique =True)
     reg_date = db.Column(db.DateTime,default = datetime.now())
 

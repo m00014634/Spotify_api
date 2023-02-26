@@ -29,6 +29,8 @@ class GetAllSongsOrCreate(Resource):
     def get(self):
         all_songs = Song.query.all()
 
+
+
         if all_songs:
             result = [{'song_id':i.id,
                        'song_name':i.song_name,
@@ -73,6 +75,7 @@ class GetOrChangeOrDeletePostById(Resource):
                                        'published_date':str(current_song.published_date),
                                        'artist_id':current_song.artist_id,
                                        'users_id':current_song.users_id,
+                                       'filename': '/'
                                        }}
 
         return {'status':0,'message':'Музыка не найдена'}
