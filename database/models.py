@@ -28,33 +28,27 @@ class User(db.Model):
         user.username = new_username
         db.session.commit()
 
-    # Change phone number
-    def change_phone_number(self,user_id,new_phone_number):
-        user = User.query.get_or_404(user_id)
-        if user.phone_number == new_phone_number:
-            return 'Новый номер должен отличаться от старого'
-        user.phone_number = new_phone_number
-        db.session.commit()
+
 
 
 
 # Artist's table
 class Artist(db.Model):
     __tablename__ = 'artists'
-    id = db.Column(db.Integer,primary_key = True, autoincrement = True)
-    nickname = db.Column(db.String,nullable = False)
+    id = db.Column(db.Integer, autoincrement = True)
+    nickname = db.Column(db.String,primary_key = True,nullable = False)
     artist_subscribes = db.Column(db.Integer,default = 0)
-    user_id = db.Column(db.Integer,db.ForeignKey('users.id',ondelete='SET NULL'))
+
 
     # Register artist
-    def register_artist(self,nickname,user_id):
-        artist = Artist(nickname=nickname,user_id = user_id)
+    def register_artist(self,nickname):
+        artist = Artist(nickname=nickname)
         db.session.add(artist)
         db.session.commit()
 
     # Change artist data
-    def change_artist(self,artist_id,new_nickname):
-        current_artist_nickname = Artist.query.get_or_404(artist_id)
+    def change_artist(self,nickname,new_nickname):
+        current_artist_nickname = Artist.query.get_or_404(nickname)
         if current_artist_nickname == new_nickname:
             return 'Новое имя должно отличаться от старого'
         current_artist_nickname.nickname = new_nickname
@@ -77,19 +71,14 @@ class Song(db.Model):
     song_name = db.Column(db.String,primary_key=True,nullable = False)
     song_likes = db.Column(db.Integer,nullable = True , default = 0)
     published_date = db.Column(db.DateTime)
-
-
     artist_id = db.Column(db.Integer,db.ForeignKey('artists.id',ondelete = 'SET NULL'))
-
-
-    user = db.relationship('User')
     artist = db.relationship('SongSettings')
 
 
 
     # Create music
-    def create_music(self,song_name,published_date,artist_id,users_id,music):
-        new_song = Song(song_name=song_name,published_date=published_date,artist_id=artist_id,users_id=users_id)
+    def create_music(self,song_name,published_date,artist_id,music):
+        new_song = Song(song_name=song_name,published_date=published_date,artist_id=artist_id)
         song_for_artist = SongSettings()
         song_for_artist.song_path = f'music/{music}'
         self.artist.append(song_for_artist)

@@ -16,7 +16,7 @@ user_model.add_argument('phone_number',type=str,required =True)
 
 new_user_model = api.parser()
 new_user_model.add_argument('new_username',type=str,required =True)
-new_user_model.add_argument('new_phone_number',type=str,required =True)
+
 
 @api.route('/user')
 class GetAllUsersOrCreate(Resource):
@@ -63,11 +63,10 @@ class GetOrChangeExactUser(Resource):
 
     # Изменение данных определенного пользователя
     @api.expect(new_user_model)
-    def put(self,user_id):
+    def put(self,username):
         args = new_user_model.parse_args()
         new_username = args.get('new_username')
-        new_phone_number = args.get('new_phone_number')
-        User().change_username(user_id,new_username)
-        User().change_phone_number(user_id,new_phone_number)
+        User().change_username(username,new_username)
+
 
         return {'status':1,'message':'Данные пользователя успешно изменены'}
