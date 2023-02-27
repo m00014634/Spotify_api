@@ -80,7 +80,7 @@ class Song(db.Model):
 
 
     artist_id = db.Column(db.Integer,db.ForeignKey('artists.id',ondelete = 'SET NULL'))
-    users_id = db.Column(db.Integer,db.ForeignKey('users.id',ondelete = 'SET NULL'))
+
 
     user = db.relationship('User')
     artist = db.relationship('SongSettings')
